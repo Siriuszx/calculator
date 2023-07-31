@@ -3,20 +3,29 @@
 // OPERATION func 12 + 7 - 5 * 3 = should yield 42
 // OPERATION EQUALS should take the whole string and convert it to a number.
 
-// CHECK status of the string
-//     IF user inputs a DIGIT append it to the number string.
-//     IF user inputs OPERATION append it to the string.
-// GO through the input field
-//      IF operation is detected doOperation(item - 1,item + 1,operator);
+/*
+UPDATE FIELD function just updates input field in DOM
+ADD INPUT function that adds context to the input field and validates input 
+DO OPERATION function performs basic calculations depending on the type of the operation
+OPERATE function
+    CREATE buffer function
+    SPLIT string into array
+    GO through the array and define operator precedence
+    ITERATE until there are no items left to operate on in input array.
+        DO those operations at indexes first, STORE them in variable
+        DO operations that have lesser precedence
+        WHEN operation is done remove those elements from array
+*/
 
 const inputField = document.querySelector('.calc-field');
 
 const INPUT_OPERANDS = '0123456789';
-const INPUT_OPERATORS = '+-*/';
+const INPUT_HIGH_OPERATORS = '*/';
+const INPUT_LOW_OPERATORS = '+-';
 
 let inputValue = '';
 
-const doOperation = {
+const doBasicMath = {
     '+': (a, b) => a + b,
     '-': (a, b) => a - b,
     '*': (a, b) => a * b,
@@ -29,27 +38,46 @@ const updInputField = function (valid) {
 }
 
 const addInput = function (inputType) {
-    if (INPUT_OPERANDS.includes(inputType) || INPUT_OPERATORS.includes(inputType)) {
+    if (INPUT_OPERANDS.includes(inputType) ||
+        INPUT_HIGH_OPERATORS.includes(inputType) ||
+        INPUT_LOW_OPERATORS.includes(inputType)) {
         inputValue += inputType;
         updInputField(true);
     } else {
         updInputField(false);
     }
 };
-
+/*
+OPERATE function
+    CREATE buffer function
+    SPLIT string into array
+    GO through the array and define operator precedence
+    DO operations with high precedence first
+    ITERATE until there are no items left to operate on in input array.
+        WHEN operation is done, remove 3 elements that taking part in the operation, replace with result
+*/
 const operate = function () {
-    const splitStr = inputField.split('');
+    let buffer = 0;
+    let strArr = inputValue.split('');
+}
 
-    for (let i = 0; i < splitStr.length; i++) {
-        if (INPUT_OPERATORS.includes(splitStr[i])) {
-            inputValue = doOperation[splitStr[i]](splitStr[i - 1], splitStr[i + 1]);
+const getPrecedenceIndex = function () {
+    let strArr = inputValue.split('');
+
+    for (let i = 0; i < strArr.length; i++) {
+        if (INPUT_HIGH_OPERATORS.includes(strArr[i])) {
+            return i;
         }
     }
+
 }
 
 addInput('1');
 addInput('+');
 addInput('2');
+addInput('*');
 addInput('3');
 
+
 console.log(inputValue);
+console.log(getPrecedenceIndex());
