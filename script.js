@@ -20,7 +20,7 @@ const resetCalc = function () {
     updInputField(true);
 }
 
-const addInput = function (e) {
+const addInput = function (e) { // TODO All of the numbers can't be converted to string. Update code for UI
     if(INPUT_OPERANDS.includes(e)) {
         inputValue += e;
     } else {
