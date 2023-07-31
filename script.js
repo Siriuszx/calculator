@@ -26,11 +26,10 @@ const INPUT_LOW_OPERATORS = '+-';
 let inputValue = '';
 
 const doBasicMath = {
-    '+': (a, b) => a + b,
-    '-': (a, b) => a - b,
-    '*': (a, b) => a * b,
-    '/': (a, b) => a / b,
-    '=': (a, b) => 0// TODO,
+    '+': (a, b) => +a + +b,
+    '-': (a, b) => +a - +b,
+    '*': (a, b) => +a * +b,
+    '/': (a, b) => +a / +b,
 };
 
 const updInputField = function (valid) {
@@ -41,7 +40,7 @@ const addInput = function (input) {
     if (INPUT_OPERANDS.includes(input) ||
         INPUT_HIGH_OPERATORS.includes(input) ||
         INPUT_LOW_OPERATORS.includes(input)) {
-        if(INPUT_OPERANDS.includes(input)) {
+        if (INPUT_OPERANDS.includes(input)) {
             inputValue += input;
         } else {
             inputValue += ` ${input} `;
@@ -51,36 +50,32 @@ const addInput = function (input) {
         updInputField(false);
     }
 };
-/*
-OPERATE function
-    CREATE buffer function
-    SPLIT string into array
-    GO through the array and define operator precedence
-    DO operations with high precedence first
-    ITERATE until there are no items left to operate on in input array.
-        WHEN operation is done, remove 3 elements that taking part in the operation, replace with result
-*/
+
 const operate = function () {
     let buffer = 0;
     let strArr = inputValue.split(' ');
-    let curPrec = getPrecedenceIndex();
+    let curPrecIdx = getPrecedenceIndex(strArr);
 
-    while (curPrec) { // 1+2+3*4
-        buffer = doBasicMath[curPrec](curPrec - 1, curPrec + 1);
-        strArr.split(curPrec + 1, 1);
-        strArr.split(curPrec, 1);
-        strArr.split(curPrec - 1, 1);
-        strArr.append(buffer);
+    while (curPrecIdx) {
+        buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
+
+        strArr.splice(curPrecIdx - 1, 3, buffer);
+
+        curPrecIdx = getPrecedenceIndex(strArr);
     }
+
+    inputValue = strArr.join(' ');
+    updInputField(true);
 }
 
-const getPrecedenceIndex = function () {
-    let strArr = inputValue.split(' ');
+const getPrecedenceIndex = function (strArr) {
 
     for (let i = 0; i < strArr.length; i++) {
-        if (INPUT_HIGH_OPERATORS.includes(strArr[i])) {
-            return i;
-        }
+        if (INPUT_HIGH_OPERATORS.includes(strArr[i])) return i;
+    }
+
+    for (let i = 0; i < strArr.length; i++) {
+        if (INPUT_LOW_OPERATORS.includes(strArr[i])) return i;
     }
 }
 
@@ -93,6 +88,4 @@ addInput('3');
 addInput('*');
 addInput('1');
 
-
-console.log(inputValue);
-console.log(getPrecedenceIndex());
+operate()
