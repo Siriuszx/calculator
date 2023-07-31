@@ -37,11 +37,15 @@ const updInputField = function (valid) {
     valid ? inputField.textContent = inputValue : inputField.textContent = 'ERROR';
 }
 
-const addInput = function (inputType) {
-    if (INPUT_OPERANDS.includes(inputType) ||
-        INPUT_HIGH_OPERATORS.includes(inputType) ||
-        INPUT_LOW_OPERATORS.includes(inputType)) {
-        inputValue += inputType;
+const addInput = function (input) {
+    if (INPUT_OPERANDS.includes(input) ||
+        INPUT_HIGH_OPERATORS.includes(input) ||
+        INPUT_LOW_OPERATORS.includes(input)) {
+        if(INPUT_OPERANDS.includes(input)) {
+            inputValue += input;
+        } else {
+            inputValue += ` ${input} `;
+        }
         updInputField(true);
     } else {
         updInputField(false);
@@ -58,25 +62,36 @@ OPERATE function
 */
 const operate = function () {
     let buffer = 0;
-    let strArr = inputValue.split('');
+    let strArr = inputValue.split(' ');
+    let curPrec = getPrecedenceIndex();
+
+    while (curPrec) { // 1+2+3*4
+        buffer = doBasicMath[curPrec](curPrec - 1, curPrec + 1);
+        strArr.split(curPrec + 1, 1);
+        strArr.split(curPrec, 1);
+        strArr.split(curPrec - 1, 1);
+        strArr.append(buffer);
+    }
 }
 
 const getPrecedenceIndex = function () {
-    let strArr = inputValue.split('');
+    let strArr = inputValue.split(' ');
 
     for (let i = 0; i < strArr.length; i++) {
         if (INPUT_HIGH_OPERATORS.includes(strArr[i])) {
             return i;
         }
     }
-
 }
 
 addInput('1');
 addInput('+');
-addInput('2');
+addInput('3');
 addInput('*');
 addInput('3');
+addInput('3');
+addInput('*');
+addInput('1');
 
 
 console.log(inputValue);
