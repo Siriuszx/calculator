@@ -1,4 +1,6 @@
 const inputField = document.querySelector('.calc-field');
+const buttons = document.querySelectorAll('.button');
+const equalsBtn = document.querySelector('.equals');
 
 const INPUT_OPERANDS = '0123456789';
 const INPUT_HIGH_OPERATORS = '*/';
@@ -13,30 +15,25 @@ const doBasicMath = {
     '/': (a, b) => +a / +b,
 };
 
-const updInputField = function (valid) {
-    valid ? inputField.textContent = inputValue : inputField.textContent = 'ERROR';
+const resetCalc = function () {
+    inputField = '';
+    updInputField(true);
 }
 
-const addInput = function (input) {
-    if (INPUT_OPERANDS.includes(input) ||
-        INPUT_HIGH_OPERATORS.includes(input) ||
-        INPUT_LOW_OPERATORS.includes(input)) {
-        if (INPUT_OPERANDS.includes(input)) {
-            inputValue += input;
-        } else {
-            inputValue += ` ${input} `;
-        }
-        updInputField(true);
+const addInput = function (e) {
+    if(INPUT_OPERANDS.includes(e)) {
+        inputValue += e;
     } else {
-        updInputField(false);
+        inputValue += ` ${e} `;
     }
+    inputField.textContent = inputValue;
 };
 
 const operate = function () {
     let buffer = 0;
     let strArr = inputValue.split(' ');
     let curPrecIdx = getPrecedenceIndex(strArr);
-
+    
     while (curPrecIdx) {
         buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
 
@@ -46,10 +43,11 @@ const operate = function () {
     }
 
     inputValue = strArr.join(' ');
-    updInputField(true);
+    inputField.textContent = inputValue;
 }
 
 const getPrecedenceIndex = function (strArr) {
+    
     for (let i = 0; i < strArr.length; i++) {
         if (INPUT_HIGH_OPERATORS.includes(strArr[i])) return i;
     }
@@ -59,3 +57,15 @@ const getPrecedenceIndex = function (strArr) {
     }
 }
 
+buttons.forEach((el) => {
+    el.addEventListener('click', addInput);
+});
+
+equalsBtn.addEventListener('click', operate);
+
+addInput('1');
+addInput('2');
+addInput('*');
+addInput('2');
+addInput('+');
+addInput('1');
