@@ -1,6 +1,7 @@
 const inputField = document.querySelector('.calc-field');
-const buttons = document.querySelectorAll('.button');
+const mathBtns = document.querySelectorAll('.digit,.operation');
 const equalsBtn = document.querySelector('.equals');
+const clearBtn = document.querySelector('.clear');
 
 const INPUT_OPERANDS = '0123456789';
 const INPUT_HIGH_OPERATORS = '*/';
@@ -15,25 +16,33 @@ const doBasicMath = {
     '/': (a, b) => +a / +b,
 };
 
-const resetCalc = function () {
-    inputField = '';
-    updInputField(true);
+function resetCalc() {
+    inputValue = '';
+    inputField.textContent = inputValue;
 }
 
-const addInput = function (e) { // TODO All of the numbers can't be converted to string. Update code for UI
-    if(INPUT_OPERANDS.includes(e)) {
-        inputValue += e;
+function addInput(e) {
+    let input = this.textContent;
+
+    if (INPUT_OPERANDS.includes(input)) {
+        inputValue += input;
     } else {
-        inputValue += ` ${e} `;
+        inputValue += ` ${input} `;
     }
     inputField.textContent = inputValue;
 };
 
-const operate = function () {
+
+// In order to perform operation on string that contains sequence of math operations
+// we divide whole string into array and look for operators first to define operator
+// precedence. 
+// To avoid errors we perform operation first and then replace operands and
+// operator with the result in the array.
+function operate() { 
     let buffer = 0;
     let strArr = inputValue.split(' ');
     let curPrecIdx = getPrecedenceIndex(strArr);
-    
+
     while (curPrecIdx) {
         buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
 
@@ -46,8 +55,7 @@ const operate = function () {
     inputField.textContent = inputValue;
 }
 
-const getPrecedenceIndex = function (strArr) {
-    
+function getPrecedenceIndex(strArr) {
     for (let i = 0; i < strArr.length; i++) {
         if (INPUT_HIGH_OPERATORS.includes(strArr[i])) return i;
     }
@@ -57,15 +65,11 @@ const getPrecedenceIndex = function (strArr) {
     }
 }
 
-buttons.forEach((el) => {
+//Button function mapping
+
+mathBtns.forEach((el) => {
     el.addEventListener('click', addInput);
 });
 
 equalsBtn.addEventListener('click', operate);
-
-addInput('1');
-addInput('2');
-addInput('*');
-addInput('2');
-addInput('+');
-addInput('1');
+clearBtn.addEventListener('click', resetCalc);
