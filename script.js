@@ -1,7 +1,9 @@
 const inputField = document.querySelector('.calc-field');
 const mathBtns = document.querySelectorAll('.digit,.operation');
 const equalsBtn = document.querySelector('.equals');
+const resetBtn = document.querySelector('.reset');
 const clearBtn = document.querySelector('.clear');
+const undoBtn = document.querySelector('.undo');
 
 const INPUT_OPERANDS = '0123456789';
 const INPUT_HIGH_OPERATORS = '*/';
@@ -24,20 +26,35 @@ function resetCalc() {
 function addInput(e) {
     let input = this.textContent;
     let strArr = inputValue.split(' ');
-
     if (INPUT_OPERANDS.includes(input)) {
-        inputValue += input;
+        if (INPUT_OPERANDS.includes(strArr[strArr.length - 1])) {
+            strArr[strArr.length - 1] += input;
+        } else {
+            strArr.push(input);
+        }
     } else if (inputValue) {
         if ((INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
-            strArr.splice(strArr.length - 2, 1, input);
+            strArr.splice(strArr.length - 1, 1, input);
             inputValue = strArr.join(' ');
         } else {
-            inputValue += ` ${input} `;
+            console.log(strArr);
+            strArr.push(input);
+            console.log(strArr);
         }
     }
+    inputValue = strArr.join(' ');
+    console.log(inputValue);
     inputField.textContent = inputValue;
 };
 
+function undoInput() {
+    let strArr = inputValue.split(' ');
+    console.log(strArr);
+    strArr.splice(strArr.length - 1, 1);
+    console.log(strArr);
+    inputValue = strArr.join(' ');
+    inputField.textContent = inputValue;
+}
 
 // In order to perform operation on string that contains sequence of math operations
 // we divide whole string into array and look for operators first to define operator
@@ -48,7 +65,7 @@ function operate() {
     let buffer = 0;
     let strArr = inputValue.split(' ');
     let curPrecIdx = getPrecedenceIndex(strArr);
-    if (!(INPUT_HIGH_OPERATORS+INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+    if (!(INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
         while (curPrecIdx) {
             buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
 
@@ -79,4 +96,5 @@ mathBtns.forEach((el) => {
 });
 
 equalsBtn.addEventListener('click', operate);
-clearBtn.addEventListener('click', resetCalc);
+resetBtn.addEventListener('click', resetCalc);
+undoBtn.addEventListener('click', undoInput);
