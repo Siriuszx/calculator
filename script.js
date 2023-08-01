@@ -26,12 +26,16 @@ function addInput(e) {
     let strArr = inputValue.split(' ');
 
     if (INPUT_OPERANDS.includes(input)) {
-        inputValue += input;
-    } else if (inputValue) {
-        if (!(INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
-            inputValue += ` ${input} `;
+        strArr.push(input);
+    } else if (strArr) {
+        if ((INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+            strArr.splice(strArr.length - 1, 1, inputValue);
+        } else {
+            strArr.push(input);
         }
     }
+
+    inputValue = strArr.join(' ');
     inputField.textContent = inputValue;
 };
 
