@@ -26,10 +26,13 @@ function resetCalc() {
 function addInput(e) {
     let input = this.textContent;
     let strArr = inputValue.split(' ');
+    console.log(strArr);
     if (INPUT_OPERANDS.includes(input)) {
-        if (INPUT_OPERANDS.includes(strArr[strArr.length - 1])) {
+        if (strArr == '' || INPUT_OPERANDS.includes(strArr[strArr.length - 1][strArr[strArr.length - 1].length - 1])) {
             strArr[strArr.length - 1] += input;
+            console.log('Append');
         } else {
+            console.log('Push')
             strArr.push(input);
         }
     } else if (inputValue) {
