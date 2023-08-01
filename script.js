@@ -10,10 +10,10 @@ const INPUT_LOW_OPERATORS = '+-';
 let inputValue = '';
 
 const doBasicMath = {
-    '+': (a, b) => +a + +b,
-    '-': (a, b) => +a - +b,
-    '*': (a, b) => +a * +b,
-    '/': (a, b) => +a / +b,
+    '+': (a, b = 0) => +a + +b,
+    '-': (a, b = 0) => +a - +b,
+    '*': (a, b = 0) => +a * +b,
+    '/': (a, b = 0) => +a / +b,
 };
 
 function resetCalc() {
@@ -24,7 +24,7 @@ function resetCalc() {
 function addInput(e) {
     let input = this.textContent;
     let strArr = inputValue.split(' ');
-    
+
     if (INPUT_OPERANDS.includes(input)) {
         inputValue += input;
     } else if (inputValue) {
@@ -48,13 +48,14 @@ function operate() {
     let buffer = 0;
     let strArr = inputValue.split(' ');
     let curPrecIdx = getPrecedenceIndex(strArr);
+    if (!(INPUT_HIGH_OPERATORS+INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+        while (curPrecIdx) {
+            buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
 
-    while (curPrecIdx) {
-        buffer = doBasicMath[strArr[curPrecIdx]](strArr[curPrecIdx - 1], strArr[curPrecIdx + 1]);
+            strArr.splice(curPrecIdx - 1, 3, buffer);
 
-        strArr.splice(curPrecIdx - 1, 3, buffer);
-
-        curPrecIdx = getPrecedenceIndex(strArr);
+            curPrecIdx = getPrecedenceIndex(strArr);
+        }
     }
 
     inputValue = strArr.join(' ');
