@@ -24,11 +24,14 @@ function resetCalc() {
 function addInput(e) {
     let input = this.textContent;
     let strArr = inputValue.split(' ');
-
+    
     if (INPUT_OPERANDS.includes(input)) {
         inputValue += input;
     } else if (inputValue) {
-        if (!(INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+        if ((INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+            strArr.splice(strArr.length - 2, 1, input);
+            inputValue = strArr.join(' ');
+        } else {
             inputValue += ` ${input} `;
         }
     }
