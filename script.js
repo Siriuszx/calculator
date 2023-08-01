@@ -23,11 +23,14 @@ function resetCalc() {
 
 function addInput(e) {
     let input = this.textContent;
+    let strArr = inputValue.split(' ');
 
     if (INPUT_OPERANDS.includes(input)) {
         inputValue += input;
-    } else {
-        inputValue += ` ${input} `;
+    } else if (inputValue) {
+        if (!(INPUT_HIGH_OPERATORS + INPUT_LOW_OPERATORS).includes(strArr[strArr.length - 1])) {
+            inputValue += ` ${input} `;
+        }
     }
     inputField.textContent = inputValue;
 };
@@ -38,7 +41,7 @@ function addInput(e) {
 // precedence. 
 // To avoid errors we perform operation first and then replace operands and
 // operator with the result in the array.
-function operate() { 
+function operate() {
     let buffer = 0;
     let strArr = inputValue.split(' ');
     let curPrecIdx = getPrecedenceIndex(strArr);
