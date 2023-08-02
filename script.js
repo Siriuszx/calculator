@@ -6,7 +6,7 @@ const clearBtn = document.querySelector('.clear');
 const undoBtn = document.querySelector('.undo');
 const floatBtn = document.querySelector('.float');
 
-const INPUT_OPERANDS = '0123456789.';
+const INPUT_OPERANDS = '0123456789 .';
 const INPUT_HIGH_OPERATORS = '*/';
 const INPUT_LOW_OPERATORS = '+-';
 
@@ -54,7 +54,7 @@ function addFloat() {
     let strArr = inputValue.split(' ');
     console.log(strArr[strArr.length-1]);
 
-    if (Number.isInteger(+strArr[strArr.length-1])) {
+    if (INPUT_OPERANDS.includes(strArr[strArr.length-1]) && Number.isInteger(+strArr[strArr.length-1])) {
         strArr[strArr.length-1] += input;
     }
     inputValue = strArr.join(' ');
