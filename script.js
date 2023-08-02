@@ -4,8 +4,9 @@ const equalsBtn = document.querySelector('.equals');
 const resetBtn = document.querySelector('.reset');
 const clearBtn = document.querySelector('.clear');
 const undoBtn = document.querySelector('.undo');
+const floatBtn = document.querySelector('.float');
 
-const INPUT_OPERANDS = '0123456789';
+const INPUT_OPERANDS = '0123456789.';
 const INPUT_HIGH_OPERATORS = '*/';
 const INPUT_LOW_OPERATORS = '+-';
 
@@ -30,9 +31,7 @@ function addInput(e) {
     if (INPUT_OPERANDS.includes(input)) {
         if (strArr == '' || INPUT_OPERANDS.includes(strArr[strArr.length - 1][strArr[strArr.length - 1].length - 1])) {
             strArr[strArr.length - 1] += input;
-            console.log('Append');
         } else {
-            console.log('Push')
             strArr.push(input);
         }
     } else if (inputValue) {
@@ -48,7 +47,19 @@ function addInput(e) {
     inputValue = strArr.join(' ');
     console.log(inputValue);
     inputField.textContent = inputValue;
-};
+}
+
+function addFloat() {
+    let input = this.textContent;
+    let strArr = inputValue.split(' ');
+    console.log(strArr[strArr.length-1]);
+
+    if (Number.isInteger(+strArr[strArr.length-1])) {
+        strArr[strArr.length-1] += input;
+    }
+    inputValue = strArr.join(' ');
+    inputField.textContent = inputValue;
+}
 
 function undoInput() {
     let strArr = inputValue.split(' ');
@@ -101,3 +112,4 @@ mathBtns.forEach((el) => {
 equalsBtn.addEventListener('click', operate);
 resetBtn.addEventListener('click', resetCalc);
 undoBtn.addEventListener('click', undoInput);
+floatBtn.addEventListener('click', addFloat);
