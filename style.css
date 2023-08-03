@@ -14,46 +14,66 @@ body {
 }
 
 .calc {
-    padding: 20px;
     height: 600px;
     width: 400px;
     border: 3px solid black;
     border-radius: 24px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
+}
+
+.calc-field {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 80%;
+    height: 50px;
+    border: 3px solid black;
 }
 
 .calc-body {
+    width: 80%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
-    gap: 20px;
-    /* TODO ALIGN-SELF CENTER */
 }
 
 .digits {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    gap: 5px;
+    gap: 42px;
+    flex-grow: 2;
+}
+
+.digit-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 .operations {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     gap: 5px;
+    flex-grow: 1;
 }
 
-.calc-field {
-    width: 80%;
-    height: 50px;
-    border: 3px solid black;
-    border-radius: 7px;
+.operations>.button {
+    padding-left: 3px;
+    font-weight: 700;
 }
 
 .button {
@@ -61,15 +81,7 @@ body {
     width: 50px;
     flex-basis: 50px;
     border: 3px solid black;
-    border-radius: 7px;
-}
-
-.equals {
-    height: 50px;
-    width: 50px;
-    flex-basis: 50px;
-    border: 3px solid black;
-    border-radius: 7px;
+    overflow-wrap: break-word;
 }
 
 .digit {
