@@ -125,10 +125,6 @@ function getPrecedenceIndex(strArr) {
 
 document.addEventListener('keydown', btnCallHandler);
 
-allBtns.forEach((el) => {
-
-});
-
 mathBtns.forEach((el) => {
     el.addEventListener('click', addInput);
 });
