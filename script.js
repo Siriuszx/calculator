@@ -1,11 +1,11 @@
 const allBtns = document.querySelectorAll('.button');
 const inputField = document.querySelector('.calc-field');
 const mathBtns = document.querySelectorAll('.digit,.operation');
-const equalsBtn = document.querySelector('.equals');
-const resetBtn = document.querySelector('.reset');
+const equalsBtn = document.querySelector('#equals');
+const resetBtn = document.querySelector('#reset');
 const clearBtn = document.querySelector('.clear');
-const undoBtn = document.querySelector('.undo');
-const floatBtn = document.querySelector('.float');
+const undoBtn = document.querySelector('#undo');
+const floatBtn = document.querySelector('#float');
 
 const INPUT_OPERANDS = '0123456789';
 const INPUT_HIGH_OPERATORS = '*/';
@@ -84,7 +84,7 @@ function btnCallHandler(e) {
         resetCalc();
     } else if (input === 'Backspace') {
         undoInput();
-    } else if (input === '=' || 'Enter') {
+    } else if (input === '=') {
         operate();
     }
 }
