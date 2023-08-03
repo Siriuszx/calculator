@@ -13,4 +13,4 @@ Make it look nice! This is a great project to practice your CSS skills. At least
 
 ~~Add a “backspace” button, so the user can undo if they click the wrong number.~~
 
-Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
+~~Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.~~
